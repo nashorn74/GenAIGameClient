@@ -19,4 +19,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="Random Image" />
 
+    <!-- 로그인 버튼을 이미지 위에 배치 -->
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인"
+        android:onClick="onLoginButtonClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="@android:color/holo_blue_dark" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,11 @@
 package com.omworldgame.guardianjourney;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         // ImageView 설정
         imageView = findViewById(R.id.imageView); // activity_main.xml에 정의된 ImageView를 참조
         showRandomImage(); // 액티비티가 처음 시작될 때 이미지 랜덤으로 표시
-
 
         // bgm01_defenders_of_destiny.mp3 파일을 재생하기 위한 MediaPlayer 설정
         mediaPlayer = MediaPlayer.create(this, R.raw.bgm01_defenders_of_destiny);
@@ -67,5 +69,12 @@ public class MainActivity extends AppCompatActivity {
         Random random = new Random();
         int randomIndex = random.nextInt(imageArray.length);  // 0, 1, 2 중 하나의 인덱스 반환
         imageView.setImageResource(imageArray[randomIndex]);  // 해당 인덱스의 이미지를 ImageView에 설정
+    }
+
+    // 로그인 버튼 클릭 시 호출될 함수 (XML에서 onClick으로 지정된 함수)
+    public void onLoginButtonClicked(View view) {
+        // LoginActivity로 이동
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
