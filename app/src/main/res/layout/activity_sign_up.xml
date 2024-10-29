@@ -5,18 +5,27 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".SignUpActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <EditText
+        android:id="@+id/firstNameEditText"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
+        android:layout_height="wrap_content"
+        android:hint="이름"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/bg01" />
+        android:layout_margin="16dp" />
+
+    <EditText
+        android:id="@+id/lastNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="성"
+        app:layout_constraintTop_toBottomOf="@id/firstNameEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
 
     <EditText
         android:id="@+id/emailEditText"
@@ -24,7 +33,7 @@
         android:layout_height="wrap_content"
         android:hint="이메일"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lastNameEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
@@ -40,27 +49,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
-    <!-- 로그인 버튼 -->
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="로그인"
-        android:onClick="onLoginButtonClicked"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/signUpButton"
-        android:layout_marginTop="16dp" />
-
-    <!-- 회원가입 버튼 -->
     <Button
         android:id="@+id/signUpButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="회원 가입"
         android:onClick="onSignUpButtonClicked"
         app:layout_constraintTop_toBottomOf="@id/passwordEditText"
-        app:layout_constraintStart_toEndOf="@id/loginButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
