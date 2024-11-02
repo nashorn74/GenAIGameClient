@@ -70,6 +70,72 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);  // 회원가입 화면으로 이동
     }
 
+    public void loadCharacterInfo(String userId, String token) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // 캐릭터 정보 GET 요청
+                    URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/character");
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestProperty("Authorization", "Bearer " + token); // 토큰을 헤더에 추가
+
+                    int responseCode = urlConnection.getResponseCode();
+
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        // 캐릭터 정보가 있을 경우
+                        InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                        String response = convertStreamToString(inputStream);  // 응답을 문자열로 변환
+                        Log.d("CharacterResponse", response);  // 응답을 로그로 출력
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // 캐릭터 수정 화면으로 이동
+                                Intent intent = new Intent(LoginActivity.this, CharacterEditActivity.class);
+                                intent.putExtra("characterData", response);  // 캐릭터 데이터를 넘김
+                                intent.putExtra("userId", userId);  // 사용자 ID를 넘김
+                                intent.putExtra("token", token);  // 인증 토큰을 넘김
+                                startActivity(intent);
+                            }
+                        });
+                    } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                        // 캐릭터 정보가 없을 경우
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // 캐릭터 생성 화면으로 이동
+                                Intent intent = new Intent(LoginActivity.this, CharacterCreateActivity.class);
+                                intent.putExtra("userId", userId);  // 사용자 ID를 넘김
+                                intent.putExtra("token", token);  // 인증 토큰을 넘김
+                                startActivity(intent);
+                            }
+                        });
+                    } else {
+                        // 기타 오류 처리
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "캐릭터 정보를 가져오는 중 오류 발생: " + responseCode, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    urlConnection.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "캐릭터 정보를 가져오는 중 오류 발생", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
     // 로그인 버튼 클릭 시 호출될 메서드
     public void onLoginButtonClicked(View view) {
         final String email = emailEditText.getText().toString().trim();
@@ -115,11 +181,20 @@ public class LoginActivity extends AppCompatActivity {
                         String response = convertStreamToString(inputStream);  // 응답 스트림을 문자열로 변환
                         Log.d("Response", response);  // 응답 내용을 로그로 출력
 
+                        // JSON 응답에서 userId와 token을 추출
+                        JSONObject responseJson = new JSONObject(response);
+                        String userId = responseJson.getJSONObject("user").getString("_id");
+                        String token = responseJson.getString("token");
+
+                        Log.d("LoginResult", "UserID: " + userId + ", Token: " + token);  // 로그에 userId와 token 출력
+
                         // 로그인 성공 처리
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(LoginActivity.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
+
+                                loadCharacterInfo(userId, token);
                             }
                         });
                     } else {
