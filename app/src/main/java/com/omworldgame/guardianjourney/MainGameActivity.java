@@ -68,6 +68,12 @@ public class MainGameActivity extends AppCompatActivity {
         fetchCharacterInfo();
     }
 
+    // 공지사항 버튼 클릭 시
+    public void onNoticeButtonClicked(View view) {
+        Intent intent = new Intent(this, NoticeActivity.class);
+        startActivity(intent);
+    }
+
     // 아이템샵 버튼 클릭 시 호출되는 메서드
     public void onItemShopButtonClicked(View view) {
         // ItemShopActivity 실행

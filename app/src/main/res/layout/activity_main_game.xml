@@ -41,6 +41,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onProfileButtonClicked" />
 
+    <!-- 공지사항 버튼 -->
+    <Button
+        android:id="@+id/noticeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="공지사항"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/profileButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onNoticeButtonClicked" />
+
     <!-- 아이템샵 버튼 -->
     <Button
         android:id="@+id/itemShopButton"
