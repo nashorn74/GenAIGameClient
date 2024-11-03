@@ -43,6 +43,23 @@ public class LoginActivity extends AppCompatActivity {
         // 이메일과 암호를 입력받는 EditText 참조
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+
+        // 캐릭터 생성/수정 화면에서 돌아올 때 자동으로 메인 화면으로 이동
+        boolean autoNavigateToMain = getIntent().getBooleanExtra("autoNavigateToMain", false);
+        if (autoNavigateToMain) {
+            String userId = getIntent().getStringExtra("userId");
+            String token = getIntent().getStringExtra("token");
+            navigateToMainGameActivity(userId, token);
+        }
+    }
+
+    // 로그인 성공 후 게임 메인 화면으로 이동하는 메서드
+    private void navigateToMainGameActivity(String userId, String token) {
+        Intent intent = new Intent(LoginActivity.this, MainGameActivity.class);
+        intent.putExtra("userId", userId);  // 사용자 ID를 넘김
+        intent.putExtra("token", token);  // 인증 토큰을 넘김
+        startActivity(intent);
+        finish();  // 로그인 화면 종료
     }
 
     private String convertStreamToString(InputStream is) {

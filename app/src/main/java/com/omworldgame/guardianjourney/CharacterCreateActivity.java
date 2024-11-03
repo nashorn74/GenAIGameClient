@@ -1,5 +1,6 @@
 package com.omworldgame.guardianjourney;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -111,7 +112,15 @@ public class CharacterCreateActivity extends AppCompatActivity {
                     if (responseCode == HttpURLConnection.HTTP_CREATED) {
                         runOnUiThread(() -> {
                             Toast.makeText(CharacterCreateActivity.this, "캐릭터 생성 성공!", Toast.LENGTH_SHORT).show();
-                            finish();  // 생성 성공 시 액티비티 종료
+
+                            // LoginActivity로 돌아가고 autoNavigateToMain 플래그 설정
+                            Intent intent = new Intent(CharacterCreateActivity.this, LoginActivity.class);
+                            intent.putExtra("autoNavigateToMain", true);
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("token", token);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();  // 생성 성공 시 현재 액티비티 종료
                         });
                     } else {
                         runOnUiThread(() -> {
