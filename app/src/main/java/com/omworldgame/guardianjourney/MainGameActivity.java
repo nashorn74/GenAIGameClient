@@ -68,9 +68,20 @@ public class MainGameActivity extends AppCompatActivity {
         fetchCharacterInfo();
     }
 
+    // 아이템샵 버튼 클릭 시 호출되는 메서드
+    public void onItemShopButtonClicked(View view) {
+        // ItemShopActivity 실행
+        Intent intent = new Intent(this, ItemShopActivity.class);
+        intent.putExtra("userId", userId);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
     // 프로필 버튼 onClick 속성에 연결된 메서드
     public void onProfileButtonClicked(View view) {
         Intent intent = new Intent(MainGameActivity.this, ProfileActivity.class);
+        intent.putExtra("userId", userId);
+        intent.putExtra("token", token);
         intent.putExtra("userName", userName);
         intent.putExtra("userGold", userGold);
         intent.putExtra("userHp", userHp);

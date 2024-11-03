@@ -1,21 +1,65 @@
 package com.omworldgame.guardianjourney;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView profileInfo;
+    private RecyclerView itemRecyclerView;
+    private ItemAdapter itemAdapter;
+    private List<Item> itemList = new ArrayList<>();
+    private String userId;
+    private String token;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Intent에서 사용자 정보를 받아옴
+        // Intent에서 userId, token 받아옴
+        userId = getIntent().getStringExtra("userId");
+        token = getIntent().getStringExtra("token");
+
+        // 사용자 정보 초기화
+        initializeProfile();
+
+        // RecyclerView 설정
+        itemRecyclerView = findViewById(R.id.itemRecyclerView);
+        itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        itemAdapter = new ItemAdapter(itemList, this);
+        itemRecyclerView.setAdapter(itemAdapter);
+
+        // 보유 아이템 정보 가져오기
+        fetchItems();
+    }
+
+    private void initializeProfile() {
+        profileInfo = findViewById(R.id.profileInfo);
         String userName = getIntent().getStringExtra("userName");
         int userGold = getIntent().getIntExtra("userGold", 0);
         int userHp = getIntent().getIntExtra("userHp", 0);
@@ -25,10 +69,6 @@ public class ProfileActivity extends AppCompatActivity {
         int attackPoint = getIntent().getIntExtra("attackPoint", 0);
         int defencePoint = getIntent().getIntExtra("defencePoint", 0);
 
-        // UI 요소 참조
-        profileInfo = findViewById(R.id.profileInfo);
-
-        // 사용자 정보 출력
         String profileText = "이름: " + userName + "\n" +
                 "금화: " + userGold + "\n" +
                 "HP: " + userHp + "\n" +
@@ -38,6 +78,56 @@ public class ProfileActivity extends AppCompatActivity {
                 "공격력: " + attackPoint + "\n" +
                 "방어력: " + defencePoint;
         profileInfo.setText(profileText);
+    }
+
+    private void fetchItems() {
+        executorService.execute(() -> {
+            StringBuilder result = new StringBuilder();
+            try {
+                URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/items");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("Authorization", "Bearer " + token);
+                urlConnection.connect();
+
+                int responseCode = urlConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    reader.close();
+                } else {
+                    Log.e("fetchItems", "Failed to fetch items. Response code: " + responseCode);
+                }
+                urlConnection.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            handler.post(() -> {
+                if (result.length() > 0) {
+                    try {
+                        JSONArray itemsArray = new JSONArray(result.toString());
+                        for (int i = 0; i < itemsArray.length(); i++) {
+                            JSONObject itemObject = itemsArray.getJSONObject(i);
+                            JSONObject itemDetails = itemObject.getJSONObject("itemId");
+                            String itemId = itemDetails.getString("_id");
+                            String itemName = itemDetails.getString("name");
+                            int quantity = itemObject.getInt("quantity");
+                            itemList.add(new Item(itemId, itemName, quantity));
+                        }
+                        itemAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(ProfileActivity.this, "아이템 정보를 파싱하는 중 오류 발생", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(ProfileActivity.this, "보유한 아이템이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     // 닫기 버튼 클릭 시 호출되는 메서드
