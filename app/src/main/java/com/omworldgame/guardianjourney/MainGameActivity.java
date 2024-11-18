@@ -10,8 +10,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPubSub;
 
 import org.json.JSONObject;
 
@@ -19,6 +25,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -39,6 +47,14 @@ public class MainGameActivity extends AppCompatActivity {
     private int userExp;
     private int attackPoint;
     private int defencePoint;
+
+    private RecyclerView chatRecyclerView;
+    private ChatAdapter chatAdapter;
+    private List<ChatMessage> chatMessages;
+
+    private EditText messageInput;
+    private Executor executor;
+    private Handler uiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +82,81 @@ public class MainGameActivity extends AppCompatActivity {
 
         // 캐릭터 정보 조회
         fetchCharacterInfo();
+
+        // 채팅 UI 초기화
+        chatRecyclerView = findViewById(R.id.chatRecyclerView);
+        messageInput = findViewById(R.id.messageInput);
+        chatMessages = new ArrayList<>();
+        chatAdapter = new ChatAdapter(chatMessages);
+        chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        chatRecyclerView.setAdapter(chatAdapter);
+
+        uiHandler = new Handler(Looper.getMainLooper());
+        executor = Executors.newSingleThreadExecutor();
+
+        connectToRedis();
+    }
+
+    public void onSendButtonClicked(View view) {
+        String message = messageInput.getText().toString();
+        if (!message.isEmpty()) {
+            publishMessage(message);
+            messageInput.setText("");
+        }
+    }
+
+    private void connectToRedis() {
+        new Thread(() -> {
+            try {
+                Jedis subscribeJedis = new Jedis("192.168.0.203", 6379);
+                // Redis 서버에 인증이 필요하다면 아래 코드 추가
+                // subscribeJedis.auth("YOUR_REDIS_PASSWORD");
+
+                // 채팅 메시지 구독
+                subscribeJedis.subscribe(new JedisPubSub() {
+                    @Override
+                    public void onMessage(String channel, String message) {
+                        // message를 "userId:메시지" 형식으로 구분
+                        String[] parts = message.split(":", 2); // ":" 기준으로 최대 2개로 나눔
+                        if (parts.length == 2) {
+                            String senderId = parts[0];  // userId 추출
+                            String chatMessageText = parts[1];  // 메시지 추출
+
+                            uiHandler.post(() -> {
+                                // ChatMessage 객체 생성 및 추가
+                                ChatMessage chatMessage = new ChatMessage(senderId, chatMessageText); // userId를 사용자 이름으로 사용
+                                chatAdapter.addMessage(chatMessage);
+                                chatRecyclerView.scrollToPosition(chatMessages.size() - 1);
+                            });
+                        } else {
+                            // 메시지 형식이 올바르지 않을 경우 로그 출력
+                            Log.e("ChatSubscribe", "Invalid message format: " + message);
+                        }
+                    }
+                }, "chat");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void publishMessage(String message) {
+        executor.execute(() -> {
+            Jedis jedis = null;
+            try {
+                jedis = new Jedis("192.168.0.203", 6379);
+                // Redis 서버에 인증이 필요하다면 아래 코드 추가
+                // jedis.auth("YOUR_REDIS_PASSWORD");
+
+                jedis.publish("chat", userId + ":" + message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (jedis != null) {
+                    jedis.close();
+                }
+            }
+        });
     }
 
     // 공지사항 버튼 클릭 시
