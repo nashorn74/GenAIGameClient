@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">GuardianJourney</string>
+
+    <string name="redis_connection_failed">Redis 연결 실패</string>
+    <string name="training_started">육성 시작</string>
+    <string name="training_failed">육성 실패</string>
+    <string name="training_error">육성 중 오류 발생</string>
+    <string name="training_progress">육성 진행 중... %1$d%%</string>
+    <string name="training_success">
+        육성 성공!\n레벨: %1$d -> %2$d\nEXP: %3$d -> %4$d\n공격력: %5$d -> %6$d\n방어력: %7$d -> %8$d
+    </string>
 </resources>

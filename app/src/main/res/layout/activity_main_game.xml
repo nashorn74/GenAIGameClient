@@ -97,4 +97,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onItemShopButtonClicked" />
+
+    <!-- 육성 버튼 -->
+    <Button
+        android:id="@+id/trainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="육성"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="onTrainButtonClicked" />
 </androidx.constraintlayout.widget.ConstraintLayout>
