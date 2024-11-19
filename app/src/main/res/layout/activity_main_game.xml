@@ -108,4 +108,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="onTrainButtonClicked" />
+
+    <!-- 전투 버튼 -->
+    <Button
+        android:id="@+id/battleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전투"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/trainButton"
+        android:onClick="onBattleButtonClicked" />
 </androidx.constraintlayout.widget.ConstraintLayout>

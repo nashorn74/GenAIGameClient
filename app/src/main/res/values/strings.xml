@@ -9,4 +9,13 @@
     <string name="training_success">
         육성 성공!\n레벨: %1$d -> %2$d\nEXP: %3$d -> %4$d\n공격력: %5$d -> %6$d\n방어력: %7$d -> %8$d
     </string>
+
+    <string name="character_hp">캐릭터 HP: %1$d/%2$d</string>
+    <string name="monster_hp">몬스터 HP: %1$d/%2$d</string>
+    <string name="battle_start">전투가 시작되었습니다!</string>
+    <string name="battle_win">전투에서 승리했습니다!</string>
+    <string name="exp_gained">획득한 경험치: %1$d</string>
+    <string name="gold_gained">획득한 골드: %1$d</string>
+    <string name="battle_loss">전투에서 패배했습니다.</string>
+    <string name="battle_start_with_monster">전투 시작! 당신은 %1$s(와)과 싸웁니다.</string>
 </resources>

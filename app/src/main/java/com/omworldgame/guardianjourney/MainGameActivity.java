@@ -182,6 +182,14 @@ public class MainGameActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // 전투 버튼 클릭 시 호출되는 메서드
+    public void onBattleButtonClicked(View view) {
+        Intent intent = new Intent(MainGameActivity.this, BattleActivity.class);
+        intent.putExtra("userId", userId);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
     // 프로필 버튼 onClick 속성에 연결된 메서드
     public void onProfileButtonClicked(View view) {
         Intent intent = new Intent(MainGameActivity.this, ProfileActivity.class);
