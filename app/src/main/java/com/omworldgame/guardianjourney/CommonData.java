@@ -36,15 +36,4 @@ public class CommonData {
         }
         return null;  // 직업이 존재하지 않을 경우
     }
-
-    // hp, mp, attack_point, defence_point 값을 기준으로 직업을 추정하는 함수
-    public static String getJobByStats(int hp, int mp, int attackPoint, int defencePoint) {
-        for (int i = 0; i < JOBS.length; i++) {
-            int[] stats = JOB_STATS[i];
-            if (stats[1] == hp && stats[2] == mp && stats[3] == attackPoint && stats[4] == defencePoint) {
-                return JOBS[i];
-            }
-        }
-        return "알 수 없는 직업";  // 스탯과 일치하는 직업이 없을 때
-    }
 }

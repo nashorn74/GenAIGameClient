@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class CharacterEditActivity extends AppCompatActivity {
 
     private Spinner raceSpinner, jobSpinner;
     private TextView statsTextView;
+    private EditText characterNameInput; // 캐릭터 이름 입력 필드
     private String userId, token;
     private int selectedGold, selectedHp, selectedMp, selectedAttack, selectedDefence;
 
@@ -37,7 +39,8 @@ public class CharacterEditActivity extends AppCompatActivity {
         userId = getIntent().getStringExtra("userId");
         token = getIntent().getStringExtra("token");
 
-        // UI 설정
+        // UI 요소 초기화
+        characterNameInput = findViewById(R.id.characterNameInput);
         raceSpinner = findViewById(R.id.raceSpinner);
         jobSpinner = findViewById(R.id.jobSpinner);
         statsTextView = findViewById(R.id.statsTextView);
@@ -88,8 +91,15 @@ public class CharacterEditActivity extends AppCompatActivity {
         try {
             JSONObject characterJson = new JSONObject(characterData);
 
+            // 캐릭터 이름 설정
+            String characterName = characterJson.optString("name", "");
+            characterNameInput.setText(characterName);
+
             // 종족 및 스탯 설정
-            int race = characterJson.getInt("race") - 1;  // 스피너 인덱스는 0부터 시작
+            int race = characterJson.getInt("race"); // 종족 인덱스
+            int job = characterJson.optInt("job", 0); // 직업 인덱스
+
+            // 스탯 설정
             selectedGold = characterJson.getInt("gold");
             selectedHp = characterJson.getInt("hp");
             selectedMp = characterJson.getInt("mp");
@@ -98,12 +108,7 @@ public class CharacterEditActivity extends AppCompatActivity {
 
             // 종족 스피너 설정
             raceSpinner.setSelection(race);
-
-            // 서버에서 직업 정보가 없으면 스탯으로 직업 추정
-            String job = CommonData.getJobByStats(selectedHp, selectedMp, selectedAttack, selectedDefence);
-            if (!job.equals("알 수 없는 직업")) {
-                jobSpinner.setSelection(java.util.Arrays.asList(CommonData.JOBS).indexOf(job));
-            }
+            jobSpinner.setSelection(job);
 
             // 스탯을 TextView에 설정
             String statsText = "Gold: " + selectedGold +
@@ -121,7 +126,14 @@ public class CharacterEditActivity extends AppCompatActivity {
 
     // 캐릭터 수정 버튼 클릭 시 호출
     public void onEditCharacterButtonClicked(View view) {
-        final int selectedRace = raceSpinner.getSelectedItemPosition() + 1;
+        final int selectedRace = raceSpinner.getSelectedItemPosition(); // 종족 인덱스
+        final int selectedJob = jobSpinner.getSelectedItemPosition();   // 직업 인덱스
+        final String characterName = characterNameInput.getText().toString();
+
+        if (characterName.isEmpty()) {
+            Toast.makeText(this, "캐릭터 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -136,6 +148,8 @@ public class CharacterEditActivity extends AppCompatActivity {
 
                     // JSON으로 캐릭터 수정 데이터 전송
                     JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("name", characterName);
+                    jsonParam.put("job", selectedJob);
                     jsonParam.put("race", selectedRace);
                     jsonParam.put("gold", selectedGold);
                     jsonParam.put("hp", selectedHp);

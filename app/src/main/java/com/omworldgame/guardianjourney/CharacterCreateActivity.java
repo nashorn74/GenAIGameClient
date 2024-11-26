@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class CharacterCreateActivity extends AppCompatActivity {
 
     private Spinner raceSpinner, jobSpinner;
     private TextView statsTextView;
+    private EditText characterNameInput; // 캐릭터 이름 입력 필드
     private String userId, token;
     private int selectedGold, selectedHp, selectedMp, selectedAttack, selectedDefence;
 
@@ -36,7 +38,8 @@ public class CharacterCreateActivity extends AppCompatActivity {
         userId = getIntent().getStringExtra("userId");
         token = getIntent().getStringExtra("token");
 
-        // 스피너 및 텍스트뷰 참조
+        // UI 요소 초기화
+        characterNameInput = findViewById(R.id.characterNameInput);
         raceSpinner = findViewById(R.id.raceSpinner);
         jobSpinner = findViewById(R.id.jobSpinner);
         statsTextView = findViewById(R.id.statsTextView);
@@ -81,7 +84,14 @@ public class CharacterCreateActivity extends AppCompatActivity {
 
     // 캐릭터 생성 버튼 클릭 시 호출
     public void onCreateCharacterButtonClicked(View view) {
-        final int selectedRace = raceSpinner.getSelectedItemPosition() + 1;
+        final int selectedRace = raceSpinner.getSelectedItemPosition(); // 종족 인덱스 (0부터 시작)
+        final int selectedJob = jobSpinner.getSelectedItemPosition();   // 직업 인덱스 (0부터 시작)
+        final String characterName = characterNameInput.getText().toString();
+
+        if (characterName.isEmpty()) {
+            Toast.makeText(this, "캐릭터 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -96,12 +106,16 @@ public class CharacterCreateActivity extends AppCompatActivity {
 
                     // JSON으로 캐릭터 생성 데이터 전송
                     JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("name", characterName);
+                    jsonParam.put("job", selectedJob);
                     jsonParam.put("race", selectedRace);
                     jsonParam.put("gold", selectedGold);
                     jsonParam.put("hp", selectedHp);
                     jsonParam.put("mp", selectedMp);
                     jsonParam.put("attack_point", selectedAttack);
                     jsonParam.put("defence_point", selectedDefence);
+                    jsonParam.put("exp", 0);      // 초기 경험치 설정
+                    jsonParam.put("level", 1);    // 초기 레벨 설정
 
                     OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
                     out.write(jsonParam.toString());

@@ -38,7 +38,8 @@ public class MainGameActivity extends AppCompatActivity {
 
     private String userId;
     private String token;
-    private String userName;
+    private String characterName;
+    private int characterJob;
     private int userRace = 1;
     private int userHp;
     private int userMp;
@@ -64,9 +65,6 @@ public class MainGameActivity extends AppCompatActivity {
         // Intent에서 userId, token 및 사용자 이름 정보를 받아옴
         userId = getIntent().getStringExtra("userId");
         token = getIntent().getStringExtra("token");
-        String firstName = getIntent().getStringExtra("firstName");
-        String lastName = getIntent().getStringExtra("lastName");
-        userName = firstName + " " + lastName;
 
         // 배경음악 설정 및 재생
         mediaPlayer = MediaPlayer.create(this, R.raw.bgm02_obsessions_veil);
@@ -76,9 +74,6 @@ public class MainGameActivity extends AppCompatActivity {
         // UI 요소 참조
         characterIcon = findViewById(R.id.characterIcon);
         userInfo = findViewById(R.id.userInfo);
-
-        // 사용자 이름 표시 (HP, MP, GOLD 정보는 조회 후 업데이트)
-        userInfo.setText(userName);
 
         // 캐릭터 정보 조회
         fetchCharacterInfo();
@@ -195,7 +190,7 @@ public class MainGameActivity extends AppCompatActivity {
         Intent intent = new Intent(MainGameActivity.this, ProfileActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("token", token);
-        intent.putExtra("userName", userName);
+        intent.putExtra("userName", characterName);
         intent.putExtra("userGold", userGold);
         intent.putExtra("userHp", userHp);
         intent.putExtra("userMp", userMp);
@@ -243,6 +238,11 @@ public class MainGameActivity extends AppCompatActivity {
                 if (finalResult != null) {
                     try {
                         JSONObject characterJson = new JSONObject(finalResult);
+                        // 캐릭터 이름과 직업 정보 추출
+                        characterName = characterJson.optString("name", "알 수 없는 이름");
+                        characterJob = characterJson.optInt("job", -1);
+
+                        // 기존의 캐릭터 정보 추출
                         userRace = characterJson.getInt("race");
                         userHp = characterJson.getInt("hp");
                         userMp = characterJson.getInt("mp");
@@ -253,8 +253,20 @@ public class MainGameActivity extends AppCompatActivity {
                         defencePoint = characterJson.getInt("defence_point");
 
                         // 캐릭터 아이콘 설정 및 사용자 정보 표시
-                        setCharacterIcon(userRace);
-                        String userInfoText = userName + "\nHP: " + userHp + "\nMP: " + userMp + "\nGOLD: " + userGold;
+                        setCharacterIcon(userRace+1);
+
+                        // 캐릭터 직업 이름 추출
+                        String jobName = "알 수 없는 직업";
+                        if (characterJob >= 0 && characterJob < CommonData.JOBS.length) {
+                            jobName = CommonData.JOBS[characterJob];
+                        }
+
+                        // 사용자 정보 텍스트 설정
+                        String userInfoText = "이름: " + characterName +
+                                "\n직업: " + jobName +
+                                "\nHP: " + userHp +
+                                "\nMP: " + userMp +
+                                "\nGOLD: " + userGold;
                         userInfo.setText(userInfoText);
 
                     } catch (Exception e) {
