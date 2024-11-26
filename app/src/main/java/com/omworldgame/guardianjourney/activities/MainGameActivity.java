@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.activities;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -15,6 +15,12 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.omworldgame.guardianjourney.adapters.ChatAdapter;
+import com.omworldgame.guardianjourney.models.ChatMessage;
+import com.omworldgame.guardianjourney.utils.CommonData;
+import com.omworldgame.guardianjourney.utils.Config;
+import com.omworldgame.guardianjourney.R;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;

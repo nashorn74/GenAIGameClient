@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.utils;
 
 public class Config {
     // 게임 서버 API 주소

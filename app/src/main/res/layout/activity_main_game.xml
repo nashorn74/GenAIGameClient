@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/map"
-    tools:context=".MainGameActivity">
+    tools:context=".activities.MainGameActivity">
 
     <!-- 캐릭터 아이콘 이미지 -->
     <ImageView

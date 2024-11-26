@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.activities;
 
 import android.os.Bundle;
 
@@ -13,6 +13,9 @@ import android.os.Looper;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.omworldgame.guardianjourney.utils.Config;
+import com.omworldgame.guardianjourney.R;
 
 import org.json.JSONObject;
 

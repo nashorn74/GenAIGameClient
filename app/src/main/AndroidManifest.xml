@@ -16,37 +16,37 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".BattleActivity"
+            android:name=".activities.BattleActivity"
             android:exported="false" />
         <activity
-            android:name=".TrainingActivity"
+            android:name=".activities.TrainingActivity"
             android:exported="false" />
         <activity
-            android:name=".NoticeActivity"
+            android:name=".activities.NoticeActivity"
             android:exported="false" />
         <activity
-            android:name=".ItemShopActivity"
+            android:name=".activities.ItemShopActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainGameActivity"
+            android:name=".activities.MainGameActivity"
             android:exported="false" />
         <activity
-            android:name=".CharacterCreateActivity"
+            android:name=".activities.CharacterCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".CharacterEditActivity"
+            android:name=".activities.CharacterEditActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

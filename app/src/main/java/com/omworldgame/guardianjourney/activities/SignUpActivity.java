@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.activities;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.omworldgame.guardianjourney.utils.Config;
+import com.omworldgame.guardianjourney.R;
 
 import org.json.JSONObject;
 

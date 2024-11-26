@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.adapters;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.omworldgame.guardianjourney.models.Item;
+import com.omworldgame.guardianjourney.R;
 
 import java.io.IOException;
 import java.io.InputStream;

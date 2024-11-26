@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg07"
-    tools:context=".TrainingActivity">
+    tools:context=".activities.TrainingActivity">
 
     <!-- 팝업 형식의 LinearLayout -->
     <LinearLayout

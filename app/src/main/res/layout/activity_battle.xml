@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg06"
-    tools:context=".BattleActivity">
+    tools:context=".activities.BattleActivity">
     <!-- 팝업 LinearLayout -->
     <LinearLayout
         android:id="@+id/battlePopupLayout"

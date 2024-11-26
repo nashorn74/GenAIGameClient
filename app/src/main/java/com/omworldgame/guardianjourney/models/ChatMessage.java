@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.models;
 
 public class ChatMessage {
     private String sender;

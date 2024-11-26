@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@drawable/bg03"
-    tools:context=".ItemShopActivity">
+    tools:context=".activities.ItemShopActivity">
     <!-- 제목 -->
     <TextView
         android:layout_width="wrap_content"

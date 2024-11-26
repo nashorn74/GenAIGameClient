@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +9,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.omworldgame.guardianjourney.utils.Config;
+import com.omworldgame.guardianjourney.models.Notice;
+import com.omworldgame.guardianjourney.adapters.NoticeAdapter;
+import com.omworldgame.guardianjourney.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

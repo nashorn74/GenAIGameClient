@@ -1,4 +1,4 @@
-package com.omworldgame.guardianjourney;
+package com.omworldgame.guardianjourney.activities;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.omworldgame.guardianjourney.utils.Config;
+import com.omworldgame.guardianjourney.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
