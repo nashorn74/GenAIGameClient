@@ -60,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void run() {
                 try {
                     // 회원가입 API 요청 URL
-                    URL url = new URL("http://192.168.0.203:3000/api/auth/register");
+                    URL url = new URL(Config.GAME_SERVER_URL + "/api/auth/register");
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Content-Type", "application/json");

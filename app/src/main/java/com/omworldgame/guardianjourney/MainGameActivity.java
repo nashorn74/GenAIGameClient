@@ -103,7 +103,7 @@ public class MainGameActivity extends AppCompatActivity {
     private void connectToRedis() {
         new Thread(() -> {
             try {
-                Jedis subscribeJedis = new Jedis("192.168.0.203", 6379);
+                Jedis subscribeJedis = new Jedis(Config.REDIS_HOST, Config.REDIS_PORT);
                 // Redis 서버에 인증이 필요하다면 아래 코드 추가
                 // subscribeJedis.auth("YOUR_REDIS_PASSWORD");
 
@@ -139,7 +139,7 @@ public class MainGameActivity extends AppCompatActivity {
         executor.execute(() -> {
             Jedis jedis = null;
             try {
-                jedis = new Jedis("192.168.0.203", 6379);
+                jedis = new Jedis(Config.REDIS_HOST, Config.REDIS_PORT);
                 // Redis 서버에 인증이 필요하다면 아래 코드 추가
                 // jedis.auth("YOUR_REDIS_PASSWORD");
 
@@ -209,7 +209,7 @@ public class MainGameActivity extends AppCompatActivity {
         executor.execute(() -> {
             String result = null;
             try {
-                URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/character");
+                URL url = new URL(Config.GAME_SERVER_URL + "/api/users/" + userId + "/character");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setRequestProperty("Authorization", "Bearer " + token);

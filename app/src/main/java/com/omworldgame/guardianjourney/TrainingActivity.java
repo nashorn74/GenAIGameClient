@@ -71,7 +71,7 @@ public class TrainingActivity extends AppCompatActivity {
     private void connectToRedis() {
         new Thread(() -> {
             try {
-                jedis = new Jedis("192.168.0.203", 6379);
+                jedis = new Jedis(Config.REDIS_HOST, Config.REDIS_PORT);
 
                 // 사용자별 채널 구독
                 String channelName = "training:" + userId;
@@ -92,7 +92,7 @@ public class TrainingActivity extends AppCompatActivity {
         executor.execute(() -> {
             try {
                 // 육성 시작 API 호출
-                URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/character/train");
+                URL url = new URL(Config.GAME_SERVER_URL + "/api/users/" + userId + "/character/train");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("Content-Type", "application/json");

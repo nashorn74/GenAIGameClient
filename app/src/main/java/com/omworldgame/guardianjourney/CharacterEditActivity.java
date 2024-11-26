@@ -139,7 +139,7 @@ public class CharacterEditActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/character");
+                    URL url = new URL(Config.GAME_SERVER_URL + "/api/users/" + userId + "/character");
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("PUT");
                     urlConnection.setRequestProperty("Content-Type", "application/json");

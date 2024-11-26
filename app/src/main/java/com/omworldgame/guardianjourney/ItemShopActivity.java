@@ -62,7 +62,7 @@ public class ItemShopActivity extends AppCompatActivity {
         executorService.execute(() -> {
             String result = null;
             try {
-                URL url = new URL("http://192.168.0.203:3000/api/items");
+                URL url = new URL(Config.GAME_SERVER_URL + "/api/items");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setRequestProperty("Authorization", "Bearer " + token);
@@ -204,7 +204,7 @@ public class ItemShopActivity extends AppCompatActivity {
             executorService.execute(() -> {
                 boolean success = false;
                 try {
-                    URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/items/" + itemId);
+                    URL url = new URL(Config.GAME_SERVER_URL + "/api/users/" + userId + "/items/" + itemId);
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Authorization", "Bearer " + token);

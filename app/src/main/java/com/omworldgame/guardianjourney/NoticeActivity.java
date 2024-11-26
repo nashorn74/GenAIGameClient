@@ -50,7 +50,7 @@ public class NoticeActivity extends AppCompatActivity {
         executorService.execute(() -> {
             StringBuilder result = new StringBuilder();
             try {
-                URL url = new URL("http://192.168.0.203:3000/api/notices");
+                URL url = new URL(Config.GAME_SERVER_URL + "/api/notices");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();

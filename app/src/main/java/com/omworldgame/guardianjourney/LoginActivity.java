@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 try {
                     // 캐릭터 정보 GET 요청
-                    URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/character");
+                    URL url = new URL(Config.GAME_SERVER_URL + "/api/users/" + userId + "/character");
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
                     urlConnection.setRequestProperty("Authorization", "Bearer " + token); // 토큰을 헤더에 추가
@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 try {
                     // 로그인 API 요청 URL
-                    URL url = new URL("http://192.168.0.203:3000/api/auth/login");
+                    URL url = new URL(Config.GAME_SERVER_URL + "/api/auth/login");
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Content-Type", "application/json");

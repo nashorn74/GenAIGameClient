@@ -84,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         executorService.execute(() -> {
             StringBuilder result = new StringBuilder();
             try {
-                URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/items");
+                URL url = new URL(Config.GAME_SERVER_URL + "/api/users/" + userId + "/items");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setRequestProperty("Authorization", "Bearer " + token);

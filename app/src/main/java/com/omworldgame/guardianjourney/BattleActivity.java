@@ -77,7 +77,7 @@ public class BattleActivity extends AppCompatActivity {
     private void connectToRedis() {
         subscribeExecutor.execute(() -> {
             try {
-                jedis = new Jedis("192.168.0.203", 6379);
+                jedis = new Jedis(Config.REDIS_HOST, Config.REDIS_PORT);
                 // 필요한 경우 Redis 비밀번호 인증
                 // jedis.auth("YOUR_REDIS_PASSWORD");
 
@@ -107,7 +107,7 @@ public class BattleActivity extends AppCompatActivity {
         executor.execute(() -> {
             try {
                 // 전투 시작 API 호출
-                URL url = new URL("http://192.168.0.203:3000/api/users/" + userId + "/character/battle");
+                URL url = new URL(Config.GAME_SERVER_URL + "/api/users/" + userId + "/character/battle");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("Authorization", "Bearer " + token);
